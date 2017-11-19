@@ -10,5 +10,6 @@
   },
   "devDependencies": {
     "johanness-scripts": "^1.1.0"
-  }
+  },
+  "repository": "git@github.com:johannes-scharlach/pipe-promised.git"
 }
