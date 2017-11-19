@@ -4,22 +4,22 @@ const Promise = require('bluebird')
 
 const reducer = (total, current) => current(total)
 
-const pipe = (...fns) => arg => Promise.reduce(fns, reducer, arg)
+const pipeUnary = (...fns) => arg => Promise.reduce(fns, reducer, arg)
 const o = (...fns) => arg => Promise.reduce(fns.reverse(), reducer, arg)
 
-const pipeNAry = (...fns) => (...args) => {
+const pipe = (...fns) => (...args) => {
   if (fns.length === 0) return Promise.resolve(args[0])
 
-  return pipe(...fns.slice(0, -1), fns[0](...args))
+  return pipeUnary(...fns.slice(0, -1), fns[0](...args))
 }
 
-const composeNAry = (...fns) => pipeNAry(...fns.reverse())
+const composeNAry = (...fns) => pipe(...fns.reverse())
 const compose = composeNAry
 
-module.exports = pipeNAry
+module.exports = pipe
 
 Object.assign(module.exports, {
-  pipe,
+  pipeUnary,
   compose,
   o,
 })
